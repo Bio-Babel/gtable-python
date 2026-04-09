@@ -44,4 +44,3 @@ gt.plot()
 
 - [grid_py](https://github.com/r-lib/grid_py) >= 0.1.0
 - numpy >= 1.24
-- matplotlib >= 3.6
