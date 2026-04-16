@@ -255,11 +255,13 @@ def width_cm(x: Any) -> float:
         Width in cm.
     """
     if is_grob(x):
-        return convert_width(grob_width(x), "cm", value_only=True)
+        val = convert_width(grob_width(x), "cm", valueOnly=True)
+        return float(val[0]) if hasattr(val, '__len__') else float(val)
     if isinstance(x, (list, tuple)):
         return max(width_cm(item) for item in x) if x else 0.0
     if is_unit(x):
-        return convert_width(x, "cm", value_only=True)
+        val = convert_width(x, "cm", valueOnly=True)
+        return float(val[0]) if hasattr(val, '__len__') else float(val)
     raise TypeError(f"Cannot compute width_cm for {type(x).__name__}")
 
 
@@ -275,13 +277,22 @@ def height_cm(x: Any) -> float:
     -------
     float
         Height in cm.
+
+    Notes
+    -----
+    R's ``height_cm`` uses ``convertWidth`` (not ``convertHeight``) for the
+    grob branch.  For absolute units (cm, inches, …) the result is identical,
+    but we mirror R exactly.
     """
     if is_grob(x):
-        return convert_height(grob_height(x), "cm", value_only=True)
+        # R uses convertWidth(grobHeight(x), "cm", TRUE) — not convertHeight
+        val = convert_width(grob_height(x), "cm", valueOnly=True)
+        return float(val[0]) if hasattr(val, '__len__') else float(val)
     if isinstance(x, (list, tuple)):
         return max(height_cm(item) for item in x) if x else 0.0
     if is_unit(x):
-        return convert_height(x, "cm", value_only=True)
+        val = convert_height(x, "cm", valueOnly=True)
+        return float(val[0]) if hasattr(val, '__len__') else float(val)
     raise TypeError(f"Cannot compute height_cm for {type(x).__name__}")
 
 

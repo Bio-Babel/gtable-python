@@ -19,6 +19,7 @@ from grid_py import (
     VpStack,
     absolute_size,
     grid_draw,
+    grid_grill,
     grid_newpage,
     grid_rect,
     grid_show_layout,
@@ -100,7 +101,7 @@ class Gtable(GTree):
         self._rownames: Optional[List[str]] = list(rownames) if rownames is not None else None
         self._colnames: Optional[List[str]] = list(colnames) if colnames is not None else None
 
-        # Reconstruct viewport if one was provided
+        # Reconstruct viewport if one was provided (mirrors R's gtable())
         actual_vp = vp
         if vp is not None:
             actual_vp = Viewport(
@@ -111,6 +112,9 @@ class Gtable(GTree):
                 height=vp.height if hasattr(vp, 'height') else None,
                 just=vp.justification if hasattr(vp, 'justification') else None,
                 gp=vp.gp if hasattr(vp, 'gp') else None,
+                xscale=vp.xscale if hasattr(vp, 'xscale') else None,
+                yscale=vp.yscale if hasattr(vp, 'yscale') else None,
+                angle=vp.angle if hasattr(vp, 'angle') else 0,
                 clip=vp.clip if hasattr(vp, 'clip') else None,
             )
 
@@ -242,7 +246,20 @@ class Gtable(GTree):
 
     # -- Repr / str -----------------------------------------------------------
 
-    def __repr__(self) -> str:
+    def to_string(self, zsort: bool = False) -> str:
+        """Format the table as a human-readable string.
+
+        Parameters
+        ----------
+        zsort : bool
+            If True, sort output rows by z value (matches R's
+            ``print.gtable(x, zsort=TRUE)``).
+
+        Returns
+        -------
+        str
+            Formatted string.
+        """
         nrow, ncol = self.shape
         n_grobs = len(self._grobs)
         header = f'TableGrob ({nrow} x {ncol}) "{self.name}": {n_grobs} grobs'
@@ -251,7 +268,10 @@ class Gtable(GTree):
 
         lines = [header]
         layout = self._layout
-        for i in range(layout_nrow(layout)):
+        indices = list(range(layout_nrow(layout)))
+        if zsort:
+            indices.sort(key=lambda i: layout["z"][i])
+        for i in indices:
             t, b = layout["t"][i], layout["b"][i]
             l, r = layout["l"][i], layout["r"][i]
             z = layout["z"][i]
@@ -261,6 +281,9 @@ class Gtable(GTree):
                 f"  z={z}  ({t}-{b},{l}-{r})  {gname}  {grob_str}"
             )
         return "\n".join(lines)
+
+    def __repr__(self) -> str:
+        return self.to_string(zsort=False)
 
     # -- Transpose ------------------------------------------------------------
 
@@ -451,6 +474,9 @@ class Gtable(GTree):
         grid_newpage()
         if bg is not None:
             grid_rect(gp=Gpar(fill=bg))
+        if grill is not None:
+            grill_seq = [i / 19.0 for i in range(20)]  # seq(0, 1, length.out=20)
+            grid_grill(h=grill_seq, v=grill_seq, gp=Gpar(col=grill))
         grid_draw(self)
 
     # -- Grid hooks (override GTree methods) ----------------------------------
@@ -491,27 +517,6 @@ class Gtable(GTree):
             self.vp = layout_vp
         else:
             self.vp = VpStack(self.vp, layout_vp)
-        return self
-
-    def make_context(self) -> "Gtable":
-        """Set up the layout viewport before it gets pushed.
-
-        Mirrors R's ``makeContext.gtable``: creates a viewport with a
-        GridLayout from widths/heights so child viewports with
-        ``layout_pos_row/col`` can resolve to cell positions.
-        """
-        nrow_gt = len(self._heights) if self._heights is not None else 0
-        ncol_gt = len(self._widths) if self._widths is not None else 0
-        if nrow_gt > 0 and ncol_gt > 0:
-            grid_layout = GridLayout(
-                nrow=nrow_gt, ncol=ncol_gt,
-                widths=self._widths, heights=self._heights,
-                respect=self._respect,
-            )
-            self.vp = Viewport(
-                name=self.name,
-                layout=grid_layout,
-            )
         return self
 
     def make_content(self) -> "Gtable":

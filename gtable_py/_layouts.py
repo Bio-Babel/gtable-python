@@ -55,10 +55,7 @@ def gtable_col(
         Single-column table.
     """
     if width is None:
-        try:
-            max_w = max(width_cm(g) for g in grobs) if grobs else 1.0
-        except Exception:
-            max_w = 1.0
+        max_w = max(width_cm(g) for g in grobs) if grobs else 1.0
         width = Unit(max_w, "cm")
     if heights is None:
         heights = Unit([1] * len(grobs), "null")
@@ -128,10 +125,7 @@ def gtable_row(
         Single-row table.
     """
     if height is None:
-        try:
-            max_h = max(height_cm(g) for g in grobs) if grobs else 1.0
-        except Exception:
-            max_h = 1.0
+        max_h = max(height_cm(g) for g in grobs) if grobs else 1.0
         height = Unit(max_h, "cm")
     if widths is None:
         widths = Unit([1] * len(grobs), "null")
