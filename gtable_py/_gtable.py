@@ -321,6 +321,13 @@ class Gtable(GTree):
         Supports ``gt[rows, cols]`` where *rows* and *cols* can be
         integers (0-based), slices, lists of ints, or lists of names.
 
+        .. note::
+           Only ``__getitem__`` uses Python's 0-based convention; the
+           ``t``/``l``/``b``/``r`` **fields** stored in ``.layout`` and
+           the ``gtable_add_grob(t=..., l=...)`` arguments remain 1-based
+           (matching R exactly), so R-to-Python code translating
+           ``gtable_add_grob`` calls directly needs no index adjustment.
+
         Parameters
         ----------
         key : tuple

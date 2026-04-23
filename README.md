@@ -1,5 +1,7 @@
 # gtable_py
 
+[![PyPI](https://img.shields.io/pypi/v/gtable-python)](https://pypi.org/project/gtable-python/)
+
 Python port of the R **gtable** package (tracks R gtable 0.3.6.9000).
 
 Depends on [`rgrid-python`](https://pypi.org/project/rgrid-python/) (R's grid
