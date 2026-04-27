@@ -22,7 +22,7 @@ from ._layouts import (
 from ._padding import gtable_add_padding
 from ._trim import gtable_trim
 
-__version__ = "0.3.6.9000"
+__version__ = "0.3.6.9000.post1"
 __r_commit__ = "c017439"
 
 __all__ = [
