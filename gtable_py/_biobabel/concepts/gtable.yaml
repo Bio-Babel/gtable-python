@@ -1,0 +1,35 @@
+id: gtable_py.Gtable
+name: Gtable
+category: composite-layout
+description: |
+  A *grob* (so it can be drawn like any other grid graphical object) that
+  carries an internal R×C cell grid plus a list of "placements" — each
+  placement says "grob G occupies rows [t, b], columns [l, r] within this
+  table." Cell widths and heights are `Unit` vectors (mixing fixed cm /
+  inches with proportional `null` units like CSS `1fr`).
+
+  Construct via `gtable_matrix(...)`, `gtable_col(...)`, `gtable_row(...)`,
+  or start from `Gtable(widths=..., heights=..., name=...)` (the class
+  constructor — there is no `.empty()` classmethod) and add grobs with
+  `gtable_add_grob`.
+invariants:
+  - "A Gtable IS a grob — pass it to `grid_py.grid_draw` directly."
+  - "Cell widths and heights are Unit objects; never plain numbers."
+  - "Indices `t/b/l/r` are 1-based and inclusive at both ends (matches R)."
+  - "`gtable_add_grob` returns a *new* Gtable; the old one is unchanged (functional API)."
+  - "`gtable_matrix` flattens a 2D nested list of grobs **column-major** into placements (outer loop = column index, inner loop = row index)."
+  - "Subscript access `gt[i, j]` uses 0-based Python indices, but every other coordinate (`t/l/b/r`, `pos=` for `gtable_add_rows/cols`) is 1-based."
+  - "Use `z=math.inf` to place a grob on top of all others, `z=-math.inf` to place it underneath (ggplot2 uses this for backgrounds)."
+mental_model:
+  for_r_users: |
+    1:1 with R `gtable::gtable()`. Same `add_grob`, `rbind`, `cbind`, filter,
+    trim operations. ggplot2 internally is "all gtable" — its panels and
+    strips are gtable cells.
+  for_python_users: |
+    Think of it as a tiled drawing surface that's also itself a drawable.
+    Closest analogue is matplotlib's `GridSpec`, except every cell can be
+    not just an Axes but any drawable; and gtables nest into other gtables.
+related_concepts:
+  - gtable_py.GtableCell
+  - grid_py.Viewport
+  - grid_py.Unit

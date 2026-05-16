@@ -1,0 +1,21 @@
+id: gtable_py.GtableCell
+name: Gtable cell (placement)
+category: composite-layout
+description: |
+  A *placement* inside a Gtable: 4 indices `(t, l, b, r)` for the row/column
+  span, a name, a clip flag, a z-order integer, and the grob to render in
+  that span. The Gtable stores placements as a DataFrame-like record;
+  `gtable_filter` selects by name, `gtable_trim` drops empty rows/cols.
+invariants:
+  - "Indices are 1-based, inclusive at both ends — `(t=1, b=1, l=1, r=1)` is a 1×1 cell at top-left."
+  - "Spans are *expected* to satisfy `t <= b` and `l <= r`; this is NOT enforced — inverted spans produce undefined drawing behavior (no error, but renderer output is unspecified)."
+  - "Two placements overlapping is allowed — z-order resolves drawing order."
+  - "Names are free-form strings; conventional names (in ggplot2) include `panel`, `axis-l`, `axis-b`, `strip-t`, `guide-box`."
+mental_model:
+  for_r_users: |
+    Same `t, l, b, r, z, clip, name` columns as R `gtable`. Use `filter` /
+    `trim` to surgically edit a built ggplot2 layout.
+  for_python_users: |
+    Like a CSS Grid cell: `grid-row: t / span (b-t+1); grid-column: l / span (r-l+1)`.
+related_concepts:
+  - gtable_py.Gtable

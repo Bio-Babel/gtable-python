@@ -1,0 +1,25 @@
+id: gtable_py.build_then_add_grob
+name: Empty gtable + iterative gtable_add_grob (functional, named)
+applicable_to:
+  - gtable_py.Gtable
+description: |
+  When the cells are heterogeneous (different spans, named cells, z-order
+  matters), construct an empty Gtable with the desired column widths and
+  row heights, then add one placement at a time with `gtable_add_grob`.
+  Each call returns a *new* Gtable — capture the return value or your edit
+  is a no-op. Use `name=` so you can later `gtable_filter` / `gtable_trim`
+  named cells.
+code_template: |
+  from grid_py import Unit
+  from gtable_py import Gtable, gtable_add_grob
+
+  tab = Gtable(
+      widths=Unit([2, 1], "null"),
+      heights=Unit([1, 2, 1], "null"),
+      name="dashboard",
+  )
+  tab = gtable_add_grob(tab, title_grob,  t=1, l=1, r=2, name="title")
+  tab = gtable_add_grob(tab, plot_grob,   t=2, l=1,                   name="plot")
+  tab = gtable_add_grob(tab, legend_grob, t=2, l=2,                   name="legend")
+  tab = gtable_add_grob(tab, footer_grob, t=3, l=1, r=2,              name="footer")
+typical_use_case: "any composite figure where you need to address cells by name later"

@@ -1,0 +1,27 @@
+id: gtable_py.gtable_add_padding_for_margins
+name: Wrap a Gtable with outer padding (plot margins)
+applicable_to:
+  - gtable_py.Gtable
+description: |
+  `gtable_add_padding(tab, padding)` is the canonical way to add outer margins
+  to a composite table. The padding is a `Unit` vector of length 1, 2, or 4
+  (CSS-style top/right/bottom/left ordering, with recycling). ggplot2-python
+  uses this for every plot's outer margins (`plot_render.py` calls it on the
+  final assembled table).
+
+  Length-1 → uniform margin on all 4 sides.
+  Length-2 → vertical (top+bottom), horizontal (left+right).
+  Length-4 → top, right, bottom, left (CSS order).
+code_template: |
+  from grid_py import Unit
+  from gtable_py import gtable_add_padding
+
+  # Uniform 5mm margin
+  framed = gtable_add_padding(tab, Unit(5, "mm"))
+
+  # Asymmetric: 10mm vertical, 5mm horizontal
+  framed2 = gtable_add_padding(tab, Unit([10, 5], "mm"))
+
+  # All four sides explicit (CSS order: top, right, bottom, left)
+  framed3 = gtable_add_padding(tab, Unit([10, 5, 10, 8], "mm"))
+typical_use_case: "any plot needing outer margins (ggplot2-python uses this universally)"

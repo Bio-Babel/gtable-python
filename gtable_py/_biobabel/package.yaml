@@ -1,0 +1,55 @@
+schema_version: 2
+
+repo: https://github.com/Bio-Babel/gtable-python
+distribution: gtable-python
+import_name: gtable_py
+display_name: "gtable-python — grob-table layout primitive (R gtable port)"
+contract_class: grammar
+tier: 1
+type: build-on
+maturity: beta
+
+r_package:
+  package: gtable
+  repo: https://github.com/r-lib/gtable
+  version_or_commit: "0.3.6.9000"
+  fidelity: full
+
+capabilities:
+  - grob-grid-layout
+  - additive-table-construction
+  - row-column-binding
+  - cell-padding-and-spacing
+  - layout-filtering-and-trimming
+
+domain_tags:
+  - visualization
+  - low-level-graphics
+
+task_tags:
+  - multi-panel-layout
+  - title-plus-legend-plus-plot
+  - composite-figure
+  - row-of-plots
+  - column-of-plots
+
+foundation:
+  - grid_py
+
+triggers:
+  - intent: "build a composite figure with title + plot + legend in cells"
+    confidence: 0.92
+  - intent: "row or column of grobs"
+    confidence: 0.9
+  - intent: "panel layout used by ggplot2 internals"
+    confidence: 0.85
+
+not_when:
+  - "single-panel plot — grid_py viewport stack is simpler"
+  - "you need a data table, not a layout — use pandas/polars"
+
+recipes:
+  - id: gtable_py.title_plot_legend_column
+    task_tags: [composite-figure, title-plus-legend-plus-plot]
+    path: recipes/title_plot_legend_column.py
+    description: "Three-row gtable: title strip on top, plot in the middle, legend on the bottom."

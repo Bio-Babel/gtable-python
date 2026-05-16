@@ -1,0 +1,17 @@
+id: gtable_py.zero_based_indices
+name: Using 0-based indices for cell placement
+applicable_to:
+  - gtable_py.GtableCell
+detection:
+  regex: 'gtable_add_grob\s*\([^)]*\bt\s*=\s*0\b'
+  static_only: true
+why_bad: |
+  gtable-python deliberately keeps R's **1-based, inclusive** cell indices so
+  that R porting is mechanical. `t=0` (or `l=0`) places the grob outside the
+  table — the row/column does not exist. This usually shows up as a
+  silently empty cell or an "index out of range" depending on which
+  operation hits it first.
+code_example_wrong: |
+  tab = gtable_add_grob(tab, g, t=0, l=0)        # ← row 0 doesn't exist
+code_example_right: |
+  tab = gtable_add_grob(tab, g, t=1, l=1)        # ← top-left cell

@@ -1,0 +1,31 @@
+id: gtable_py.gtable_add_space_between_cells
+name: Add row/column spacing between adjacent cells
+applicable_to:
+  - gtable_py.Gtable
+description: |
+  `gtable_add_row_space(tab, heights)` inserts gap rows *between* existing
+  rows. `gtable_add_col_space(tab, widths)` does the same for columns.
+
+  `heights` (or `widths`) is a Unit vector of length 1 (uniform gap between
+  every consecutive pair) or length `n-1` (gap-per-pair). Build the table
+  dense first, then drop spacers in.
+
+  ggplot2-python uses this extensively for facet panel gaps and legend entry
+  spacing — e.g. `guide_legend.py` inserts `Unit(2, "lines")` between legend
+  rows.
+code_template: |
+  from grid_py import Unit
+  from gtable_py import Gtable, gtable_add_grob, gtable_add_row_space
+
+  # Build a 3-row table densely, then space the rows by 5mm.
+  tab = Gtable(widths=Unit([1], "null"), heights=Unit([1, 6, 1], "null"))
+  tab = gtable_add_grob(tab, title_grob,  t=1, l=1, name="title")
+  tab = gtable_add_grob(tab, plot_grob,   t=2, l=1, name="plot")
+  tab = gtable_add_grob(tab, legend_grob, t=3, l=1, name="legend")
+
+  # Uniform 5mm gap between every adjacent row pair (length 1, recycled).
+  tab = gtable_add_row_space(tab, Unit(5, "mm"))
+
+  # Or different gaps per pair: 8mm between rows 1-2, 3mm between rows 2-3.
+  # tab = gtable_add_row_space(tab, Unit([8, 3], "mm"))
+typical_use_case: "facet panels with visible gaps, legend rows, multi-panel composite figures"

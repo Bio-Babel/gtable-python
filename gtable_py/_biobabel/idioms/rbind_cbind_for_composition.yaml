@@ -1,0 +1,16 @@
+id: gtable_py.rbind_cbind_for_composition
+name: Stack Gtables with rbind_gtable / cbind_gtable
+applicable_to:
+  - gtable_py.Gtable
+description: |
+  When two or more gtables are independently built (e.g. one gtable per
+  ggplot panel), compose them by stacking. `rbind_gtable` stacks vertically
+  (sharing column widths); `cbind_gtable` stacks horizontally (sharing
+  row heights). The `size` argument controls width/height reconciliation
+  when sizes differ between operands.
+code_template: |
+  from gtable_py import rbind_gtable, cbind_gtable
+
+  composite = rbind_gtable(plot_a, plot_b, size="first")
+  side_by_side = cbind_gtable(left_panel, right_panel, size="max")
+typical_use_case: "compose multiple ggplots into one figure outside of patchwork"

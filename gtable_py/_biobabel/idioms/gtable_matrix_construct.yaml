@@ -1,0 +1,24 @@
+id: gtable_py.gtable_matrix_construct
+name: Build a composite from a 2D grob list with gtable_matrix
+applicable_to:
+  - gtable_py.Gtable
+description: |
+  When you have a 2D grid of pre-built grobs and want them laid out
+  row-by-row, `gtable_matrix` is the one-liner. Supply nested list of grobs
+  plus parallel widths/heights vectors. The result is a Gtable you can draw
+  or feed into another gtable.
+code_template: |
+  from grid_py import Unit, rect_grob, text_grob, gpar
+  from gtable_py import gtable_matrix
+
+  cells = [
+      [rect_grob(gp=gpar(fill="#fee")),  rect_grob(gp=gpar(fill="#efe"))],
+      [text_grob("A"),                    text_grob("B")],
+  ]
+  tab = gtable_matrix(
+      name="demo",
+      grobs=cells,
+      widths=Unit([1, 1], "null"),
+      heights=Unit([2, 1], "null"),
+  )
+typical_use_case: "panel grid with equal-shape cells (heatmap legend strip, multi-panel comparison)"

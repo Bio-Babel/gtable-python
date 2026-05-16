@@ -1,0 +1,24 @@
+id: gtable_py.mutating_returned_gtable
+name: Mutating a Gtable in place instead of using the returned value
+applicable_to:
+  - gtable_py.Gtable
+detection:
+  # Anchor to start-of-line so we only flag bare-statement calls; an
+  # assignment like `tab = gtable_add_grob(...)` correctly does NOT match.
+  regex: '^\s*gtable_(?:add_grob|add_rows|add_cols|filter|trim|add_padding|add_(?:row|col)_space)\s*\([^)]*\)\s*$'
+  static_only: true
+why_bad: |
+  `gtable_add_grob`, `gtable_add_rows`, `gtable_filter`, `gtable_trim`,
+  `gtable_add_padding`, and friends are **functional** — they return a new
+  Gtable and leave the input unchanged. Calling them as a bare statement
+  (without capturing the result) is a no-op.
+
+  This mirrors R's behavior; in R you also have to assign back. The Python
+  port deliberately preserved this rather than adopting an in-place style.
+correct_pattern: gtable_py.build_then_add_grob
+code_example_wrong: |
+  tab = Gtable(widths=Unit([1], "null"), heights=Unit([1], "null"))
+  gtable_add_grob(tab, g, t=1, l=1)             # ← return value discarded
+code_example_right: |
+  tab = Gtable(widths=Unit([1], "null"), heights=Unit([1], "null"))
+  tab = gtable_add_grob(tab, g, t=1, l=1)       # ← capture the new Gtable
