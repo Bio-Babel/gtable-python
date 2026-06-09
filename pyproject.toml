@@ -56,6 +56,8 @@ Repository    = "https://github.com/R2pyBioinformatics/gtable_py"
 Issues        = "https://github.com/R2pyBioinformatics/gtable_py/issues"
 Documentation = "https://github.com/R2pyBioinformatics/gtable_py#readme"
 
+[project.entry-points."biobabel.manifest"]
+gtable_py = "gtable_py._biobabel:get_manifest"
 [tool.hatch.build.targets.wheel]
 packages = ["gtable_py"]
 
@@ -74,3 +76,6 @@ exclude = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.biobabel]
+contract_class = "grammar"

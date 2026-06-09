@@ -1,0 +1,30 @@
+id: gtable_py.rbind_cbind_for_composition
+name: Stack Gtables with rbind_gtable / cbind_gtable (simple case)
+applicable_to:
+  - gtable_py.Gtable
+description: |
+  `rbind_gtable` / `cbind_gtable` are the SIMPLE-STACKING case: glue a handful
+  of independently-built gtables edge to edge. `rbind_gtable(*gts)` stacks
+  vertically (sharing column widths); `cbind_gtable(*gts)` stacks horizontally
+  (sharing row heights). Both take varargs plus a `size` keyword (default
+  `"max"`) that reconciles the shared dimension when operands differ
+  (`"first"`, `"last"`, `"max"`, `"min"`), and an optional `z` list. Each
+  operand must already be a gtable — guard with `is_gtable(x)` if the source
+  is uncertain.
+
+  CAVEAT — this is NOT how a real plot-composition library lays plots out.
+  Stacking assumes the operands line up on the shared axis and compose into a
+  simple row/column. patchwork-python does NOT use rbind/cbind: it builds one
+  pre-sized empty `Gtable` (a design grid) and places each panel into an
+  absolute cell with `gtable_add_grob(t=, l=, z=, name=)`. That design-grid
+  approach handles ragged spans, overlaps/insets, z-order, and named cells —
+  things rbind/cbind cannot express. For true multi-panel plot composition,
+  reach for `gtable_py.build_then_add_grob` instead. Use rbind/cbind only for
+  the genuinely simple "two finished gtables, just stack them" case.
+code_template: |
+  from gtable_py import rbind_gtable, cbind_gtable, is_gtable
+
+  assert is_gtable(plot_a) and is_gtable(plot_b)
+  composite = rbind_gtable(plot_a, plot_b, size="first")   # vertical stack
+  side_by_side = cbind_gtable(left_panel, right_panel, size="max")  # horizontal
+typical_use_case: "glue two already-built gtables edge-to-edge; for a real multi-panel figure use build_then_add_grob"
