@@ -1,0 +1,29 @@
+# AUTO-GENERATED tier-1 API surface — signature/params/docstring introspected
+# from the installed package (fact, not claim). Regenerate after a version bump:
+#   python tools/gen_tier1_symbols.py <import_name>
+# Hand-curated tier-2 fields (failure_fixes / anti-patterns / produces) are added
+# directly in this file by humans and are NOT overwritten on regeneration unless
+# you delete the file first.
+# Auto-generated stub for gtable_py.gtable_row_spacer.
+# Review and fill: purpose, mutates, requires, writes, examples, failure_fixes, related.
+id: gtable_py.gtable_row_spacer
+import_path: gtable_py.gtable_row_spacer
+kind: function
+signature: 'gtable_row_spacer(widths: ''Unit'') -> ''Gtable'''
+purpose: Create a zero-row gtable with given widths (row spacer).
+description: Create a zero-row gtable with given widths (row spacer).
+parameters:
+- name: widths
+  type: Unit
+  required: true
+  default: null
+mutates: ''
+returns: Gtable
+requires: []
+writes: []
+examples:
+- 'gtable_row_spacer(Unit([1, 1], "null"))  # 0-row spacer carrying 2 columns'
+failure_fixes: []
+related:
+- gtable_py.gtable_col_spacer
+- gtable_py.gtable_add_row_space

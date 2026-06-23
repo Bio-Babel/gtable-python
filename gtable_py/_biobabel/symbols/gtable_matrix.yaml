@@ -1,0 +1,71 @@
+# AUTO-GENERATED tier-1 API surface — signature/params/docstring introspected
+# from the installed package (fact, not claim). Regenerate after a version bump:
+#   python tools/gen_tier1_symbols.py <import_name>
+# Hand-curated tier-2 fields (failure_fixes / anti-patterns / produces) are added
+# directly in this file by humans and are NOT overwritten on regeneration unless
+# you delete the file first.
+# Auto-generated stub for gtable_py.gtable_matrix.
+# Review and fill: purpose, mutates, requires, writes, examples, failure_fixes, related.
+id: gtable_py.gtable_matrix
+import_path: gtable_py.gtable_matrix
+kind: function
+signature: 'gtable_matrix(name: ''str'', grobs: ''List[List[Any]]'', widths: ''Unit'',
+  heights: ''Unit'', z: ''Optional[List[List[float]]]'' = None, respect: ''bool''
+  = False, clip: ''str'' = ''on'', vp: ''Any'' = None) -> ''Gtable'''
+purpose: Create a gtable from a matrix (list of lists) of grobs.
+description: Create a gtable from a matrix (list of lists) of grobs.
+parameters:
+- name: name
+  type: str
+  required: true
+  default: null
+- name: grobs
+  type: List[List[Any]]
+  required: true
+  default: null
+- name: widths
+  type: Unit
+  required: true
+  default: null
+- name: heights
+  type: Unit
+  required: true
+  default: null
+- name: z
+  type: Optional[List[List[float]]]
+  required: false
+  default: null
+- name: respect
+  type: bool
+  required: false
+  default: false
+- name: clip
+  type: str
+  required: false
+  default: 'on'
+- name: vp
+  type: Any
+  required: false
+  default: null
+mutates: ''
+returns: Gtable
+requires: []
+writes: []
+examples:
+- 'gtable_matrix("m", [[g11, g12], [g21, g22]], widths=Unit([1, 1], "null"), heights=Unit([1, 1], "null"))  # grobs[row][col]'
+- 'gt = gtable_matrix("m", tiles, widths=..., heights=...); [(gt.grobs[i].name, gt.layout["t"][i], gt.layout["l"][i]) for i in range(len(gt.grobs))]  # identity from gt.grobs[i].name, NOT gt.layout["name"] (= table name)'
+failure_fixes:
+- when: 'ValueError: `widths` must match the number of columns in `grobs`'
+  suggest:
+  - 'len(widths) must equal the column count len(grobs[0]); len(heights) must equal the row count len(grobs).'
+  - 'grobs is a row-major nested list, grobs[row][col], and every row must have the same length.'
+  explanation: 'widths sizes the columns and heights sizes the rows, so both must match the grobs grid shape.'
+- when: 'gt.layout["name"] is the same string (the table name) for every cell, not the per-grob identity.'
+  suggest:
+  - 'gtable_matrix adds grobs WITHOUT a per-cell name, so every placement inherits the TABLE name (gtable_add_grob defaults name to x.name).'
+  - 'Read each grob identity via gt.grobs[i].name — the .grobs list is parallel to the .layout arrays (t / l / name) — and set it when building the grob (name= on the grob constructor).'
+  explanation: 'gt.layout["name"] records the placement name, which gtable_matrix leaves as the table name; the per-grob identity lives on the grob object, not in the layout.'
+related:
+- gtable_py.gtable_col
+- gtable_py.gtable_row
+- gtable_py.gtable_add_grob

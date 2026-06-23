@@ -1,0 +1,40 @@
+# AUTO-GENERATED tier-1 API surface — signature/params/docstring introspected
+# from the installed package (fact, not claim). Regenerate after a version bump:
+#   python tools/gen_tier1_symbols.py <import_name>
+# Hand-curated tier-2 fields (failure_fixes / anti-patterns / produces) are added
+# directly in this file by humans and are NOT overwritten on regeneration unless
+# you delete the file first.
+# Auto-generated stub for gtable_py.gtable_add_rows.
+# Review and fill: purpose, mutates, requires, writes, examples, failure_fixes, related.
+id: gtable_py.gtable_add_rows
+import_path: gtable_py.gtable_add_rows
+kind: function
+signature: 'gtable_add_rows(x: ''Gtable'', heights: ''Unit'', pos: ''int'' = -1) ->
+  ''Gtable'''
+purpose: Insert new rows at a given position.
+description: Insert new rows at a given position.
+parameters:
+- name: x
+  type: Gtable
+  required: true
+  default: null
+- name: heights
+  type: Unit
+  required: true
+  default: null
+- name: pos
+  type: int
+  required: false
+  default: -1
+mutates: ''
+returns: Gtable
+requires: []
+writes: []
+examples:
+- 'tab = gtable_add_rows(tab, Unit(1, "cm"), pos=0)  # pos=0 inserts at the top'
+- 'tab = gtable_add_rows(tab, Unit(1, "null"))  # pos defaults to -1: append at the bottom'
+failure_fixes: []
+related:
+- gtable_py.gtable_add_cols
+- gtable_py.gtable_add_row_space
+- gtable_py.gtable_add_padding

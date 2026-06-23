@@ -11,30 +11,8 @@ r_package:
   repo: https://github.com/r-lib/gtable
   version_or_commit: 0.3.6.9000
   fidelity: full
-capabilities:
-- grob-grid-layout
-- additive-table-construction
-- row-column-binding
-- cell-padding-and-spacing
-- layout-filtering-and-trimming
-domain_tags:
-- visualization
-- low-level-graphics
-task_tags:
-- multi-panel-layout
-- title-plus-legend-plus-plot
-- composite-figure
-- row-of-plots
-- column-of-plots
 foundation:
 - grid_py
-triggers:
-- build a composite figure with title + plot + legend in cells
-- row or column of grobs
-- panel layout used by ggplot2 internals
-not_when:
-- single-panel plot — grid_py viewport stack is simpler
-- you need a data table, not a layout — use pandas/polars
 templates:
 - id: gtable_py.title_plot_legend_column
   path: templates/title_plot_legend_column.py

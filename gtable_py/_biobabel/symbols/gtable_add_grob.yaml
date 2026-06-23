@@ -1,0 +1,77 @@
+# AUTO-GENERATED tier-1 API surface — signature/params/docstring introspected
+# from the installed package (fact, not claim). Regenerate after a version bump:
+#   python tools/gen_tier1_symbols.py <import_name>
+# Hand-curated tier-2 fields (failure_fixes / anti-patterns / produces) are added
+# directly in this file by humans and are NOT overwritten on regeneration unless
+# you delete the file first.
+# Auto-generated stub for gtable_py.gtable_add_grob.
+# Review and fill: purpose, mutates, requires, writes, examples, failure_fixes, related.
+id: gtable_py.gtable_add_grob
+import_path: gtable_py.gtable_add_grob
+kind: function
+signature: 'gtable_add_grob(x: ''Gtable'', grobs: ''Union[Grob, List[Grob]]'', t:
+  ''Union[int, List[int]]'', l: ''Union[int, List[int]]'', b: ''Optional[Union[int,
+  List[int]]]'' = None, r: ''Optional[Union[int, List[int]]]'' = None, z: ''Union[float,
+  List[float]]'' = inf, clip: ''Union[str, List[str]]'' = ''on'', name: ''Optional[Union[str,
+  List[str]]]'' = None) -> ''Gtable'''
+purpose: Add grobs to a gtable.
+description: Add grobs to a gtable.
+parameters:
+- name: x
+  type: Gtable
+  required: true
+  default: null
+- name: grobs
+  type: Union[Grob, List[Grob]]
+  required: true
+  default: null
+- name: t
+  type: Union[int, List[int]]
+  required: true
+  default: null
+- name: l
+  type: Union[int, List[int]]
+  required: true
+  default: null
+- name: b
+  type: Optional[Union[int, List[int]]]
+  required: false
+  default: null
+- name: r
+  type: Optional[Union[int, List[int]]]
+  required: false
+  default: null
+- name: z
+  type: Union[float, List[float]]
+  required: false
+  default: .inf
+- name: clip
+  type: Union[str, List[str]]
+  required: false
+  default: 'on'
+- name: name
+  type: Optional[Union[str, List[str]]]
+  required: false
+  default: null
+mutates: ''
+returns: Gtable
+requires: []
+writes: []
+examples:
+- 'tab = gtable_add_grob(tab, g, t=1, l=1, name="cell")  # 1-based, inclusive; capture the new table'
+- 'tab = gtable_add_grob(tab, banner, t=1, l=1, r=2)  # span columns 1-2 of row 1'
+- 'tab = gtable_add_grob(tab, [g1, g2], t=[1, 2], l=1, name=["a", "b"])  # several grobs at once'
+failure_fixes:
+- when: 'ValueError: All inputs must have length 1 or same length as grobs, but `t` has length N'
+  suggest:
+  - 'Pass scalar t/l/b/r (broadcast to every grob) or lists whose length equals len(grobs).'
+  explanation: 'When placing multiple grobs in one call, each of t/l/b/r/z/clip/name must be length 1 or len(grobs).'
+- when: 'Grob silently misdraws or errors only at grid_draw time — t/l/b/r point outside the table.'
+  suggest:
+  - 'Keep t/l/b/r within 1..nrow / 1..ncol (1-based, inclusive); t=1, l=1 is the top-left cell.'
+  - 'Grow the table first with gtable_add_rows / gtable_add_cols if the target cell does not exist yet.'
+  explanation: 'gtable_add_grob does NOT bounds-check positions; an out-of-range placement is stored as-is and only surfaces when the table is rendered.'
+related:
+- gtable_py.Gtable
+- gtable_py.gtable_matrix
+- gtable_py.gtable_filter

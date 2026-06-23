@@ -1,0 +1,62 @@
+# AUTO-GENERATED tier-1 API surface — signature/params/docstring introspected
+# from the installed package (fact, not claim). Regenerate after a version bump:
+#   python tools/gen_tier1_symbols.py <import_name>
+# Hand-curated tier-2 fields (failure_fixes / anti-patterns / produces) are added
+# directly in this file by humans and are NOT overwritten on regeneration unless
+# you delete the file first.
+# Auto-generated stub for gtable_py.Gtable.
+# Review and fill: purpose, mutates, requires, writes, examples, failure_fixes, related.
+id: gtable_py.Gtable
+import_path: gtable_py.Gtable
+kind: class
+signature: 'Gtable(widths: ''Optional[Unit]'' = None, heights: ''Optional[Unit]''
+  = None, respect: ''bool'' = False, name: ''str'' = ''layout'', rownames: ''Optional[List[str]]''
+  = None, colnames: ''Optional[List[str]]'' = None, vp: ''Optional[Viewport]'' = None)
+  -> ''None'''
+purpose: A table of grid grobs with row/column layout.
+description: A table of grid grobs with row/column layout.
+parameters:
+- name: widths
+  type: Optional[Unit]
+  required: false
+  default: null
+- name: heights
+  type: Optional[Unit]
+  required: false
+  default: null
+- name: respect
+  type: bool
+  required: false
+  default: false
+- name: name
+  type: str
+  required: false
+  default: layout
+- name: rownames
+  type: Optional[List[str]]
+  required: false
+  default: null
+- name: colnames
+  type: Optional[List[str]]
+  required: false
+  default: null
+- name: vp
+  type: Optional[Viewport]
+  required: false
+  default: null
+mutates: ''
+returns: None
+requires: []
+writes: []
+examples:
+- 'Gtable(widths=Unit([1, 2], "cm"), heights=Unit([3, 4], "cm"), name="t")  # empty table: 2 columns x 2 rows'
+- 'Gtable()  # 0x0 table; grow it later with gtable_add_rows / gtable_add_cols'
+failure_fixes:
+- when: 'TypeError: `widths` must be a Unit vector, got list'
+  suggest:
+  - 'Wrap dimensions in a grid_py Unit, e.g. widths=Unit([1, 2], "null"), heights=Unit([1], "cm").'
+  explanation: 'widths/heights must be Unit vectors (or None); plain numbers or lists are rejected by the constructor.'
+related:
+- gtable_py.gtable_add_grob
+- gtable_py.gtable_matrix
+- gtable_py.is_gtable

@@ -8,7 +8,9 @@ description: |
   row heights, then add one placement at a time with `gtable_add_grob`.
   Each call returns a *new* Gtable — capture the return value or your edit
   is a no-op. Use `name=` so you can later `gtable_filter` / `gtable_trim`
-  named cells.
+  named cells. To read back each cell's resolved size in mm when the tracks
+  are "null" (flexible) units, see grid_py idiom resolve_null_track_mm
+  (convert_width / gtable_width return 0 for null tracks).
 code_template: |
   from grid_py import Unit
   from gtable_py import Gtable, gtable_add_grob

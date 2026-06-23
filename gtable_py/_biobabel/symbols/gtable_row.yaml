@@ -1,0 +1,55 @@
+# AUTO-GENERATED tier-1 API surface — signature/params/docstring introspected
+# from the installed package (fact, not claim). Regenerate after a version bump:
+#   python tools/gen_tier1_symbols.py <import_name>
+# Hand-curated tier-2 fields (failure_fixes / anti-patterns / produces) are added
+# directly in this file by humans and are NOT overwritten on regeneration unless
+# you delete the file first.
+# Auto-generated stub for gtable_py.gtable_row.
+# Review and fill: purpose, mutates, requires, writes, examples, failure_fixes, related.
+id: gtable_py.gtable_row
+import_path: gtable_py.gtable_row
+kind: function
+signature: 'gtable_row(name: ''str'', grobs: ''List[Any]'', height: ''Optional[Unit]''
+  = None, widths: ''Optional[Unit]'' = None, z: ''Optional[List[float]]'' = None,
+  vp: ''Any'' = None, clip: ''str'' = ''inherit'') -> ''Gtable'''
+purpose: Create a single-row gtable.
+description: Create a single-row gtable.
+parameters:
+- name: name
+  type: str
+  required: true
+  default: null
+- name: grobs
+  type: List[Any]
+  required: true
+  default: null
+- name: height
+  type: Optional[Unit]
+  required: false
+  default: null
+- name: widths
+  type: Optional[Unit]
+  required: false
+  default: null
+- name: z
+  type: Optional[List[float]]
+  required: false
+  default: null
+- name: vp
+  type: Any
+  required: false
+  default: null
+- name: clip
+  type: str
+  required: false
+  default: inherit
+mutates: ''
+returns: Gtable
+requires: []
+writes: []
+examples:
+- 'gtable_row("row", [g1, g2])  # 1-row table; grobs placed side by side, one per column'
+failure_fixes: []
+related:
+- gtable_py.gtable_col
+- gtable_py.gtable_matrix

@@ -1,0 +1,43 @@
+# AUTO-GENERATED tier-1 API surface — signature/params/docstring introspected
+# from the installed package (fact, not claim). Regenerate after a version bump:
+#   python tools/gen_tier1_symbols.py <import_name>
+# Hand-curated tier-2 fields (failure_fixes / anti-patterns / produces) are added
+# directly in this file by humans and are NOT overwritten on regeneration unless
+# you delete the file first.
+# Auto-generated stub for gtable_py.rbind_gtable.
+# Review and fill: purpose, mutates, requires, writes, examples, failure_fixes, related.
+id: gtable_py.rbind_gtable
+import_path: gtable_py.rbind_gtable
+kind: function
+signature: 'rbind_gtable(*args: ''Gtable'', size: ''str'' = ''max'', z: ''Optional[List[float]]''
+  = None) -> ''Gtable'''
+purpose: Row-bind multiple gtables.
+description: Row-bind multiple gtables.
+parameters:
+- name: args
+  type: Gtable
+  required: true
+  default: null
+- name: size
+  type: str
+  required: false
+  default: max
+- name: z
+  type: Optional[List[float]]
+  required: false
+  default: null
+mutates: ''
+returns: Gtable
+requires: []
+writes: []
+examples:
+- 'rbind_gtable(top, bottom)  # stack vertically; inputs must share ncol'
+- 'rbind_gtable(a, b, size="first")  # reconcile column widths to those of the first table'
+failure_fixes:
+- when: 'ValueError: `x` and `y` must have the same number of columns'
+  suggest:
+  - 'Every table passed to rbind_gtable must have the same column COUNT (ncol).'
+  - 'size="first"/"last"/"min"/"max" only reconciles differing column WIDTHS, not counts.'
+  explanation: 'rbind stacks tables vertically, so they must align column-for-column; pad a narrower table with gtable_add_cols first.'
+related:
+- gtable_py.cbind_gtable

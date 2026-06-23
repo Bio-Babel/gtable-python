@@ -3,7 +3,7 @@ name: Using 0-based indices for cell placement
 applicable_to:
   - gtable_py.GtableCell
 detection:
-  regex: 'gtable_add_grob\s*\([^)]*\b[tlbr]\s*=\s*0\b'
+  regex: 'gtable_add_grob\s*\((?:[^()]|\([^()]*\))*?\b[tlbr]\s*=\s*0\b'
   static_only: true
 why_bad: |
   gtable-python deliberately keeps R's **1-based, inclusive** cell indices so
